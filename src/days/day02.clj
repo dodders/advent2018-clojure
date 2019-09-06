@@ -2,8 +2,8 @@
   (:require [clojure.string :as str]))
 
 (defn get-inp []
-  ;(str/split (slurp "resources/data02.test.txt") #"\n")
-  (str/split (slurp "resources/data02.txt") #"\n"))
+  (str/split (slurp "resources/data02.test.txt") #"\n"))
+  ;(str/split (slurp "resources/data02.txt") #"\n"))
 
 (defn same [x] x)
 
@@ -30,7 +30,29 @@
     ; of three counts, so answer is x * y...
     (reduce * total)))
 
-(part1)
+(defn diff-by-one? [s1 s2 diff]
+  (cond
+    (> diff 1) false
+    (and (= 0 (count s1)) (= diff 0)) false
+    (and (= 0 (count s1)) (= diff 1)) true
+    :else (diff-by-one? (rest s1) (rest s2)
+                        (if (= (first s1) (first s2)) diff (inc diff)))))
+
+(defn get-common-letters [w1 w2 ret]
+  (cond
+    (= 0 (count w1)) ret
+    (= (first w1) (first w2))
+    (get-common-letters (rest w1) (rest w2) (conj ret (first w1)))
+    :else  (get-common-letters (rest w1) (rest w2) ret)))
+
+; return a function that finds a match for word in words
+(defn get-match-fn [words]
+  (fn [word]
+    (prn word words)))
 
 
+(defn part2 []
+  (let [inp (get-inp)
+        match (get-match-fn inp)]
+    (map match inp)))
 
