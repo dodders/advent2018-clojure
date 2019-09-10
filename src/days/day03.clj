@@ -16,12 +16,18 @@
             y (range (point 1) (+ (point 1) (area 1)))]
           (list x y))))
 
-(defn part1 []
+(defn part1 [prod]
   (->>
-    (utils/get-inp "03" false)
+    (utils/get-inp "03" prod)
     (map #(strings/split % #" "))
     (map get-points)
-    (map expand)))
+    (map expand)
+    (apply concat)
+    (frequencies)
+    (filter #(> (val %) 1))
+    (count)))
 
-(def r (part1))
+(defn run []
+  (let [prod true]
+    {:part1 (part1 prod)}))
 
