@@ -30,20 +30,27 @@
         reacted
         (recur reacted))))
 
-(defn part1 [prod]
-  (->>
-    (get-inp prod)
-    (do-react)
-    (count)))
+(defn not-match-ignore-case [a b]
+  (not (= (upper a) (upper b))))
 
+(defn do-unit-types [poly]
+  (for [x "abcdefghijklmnopqrstuvwxyz"]
+     (let [new-poly (filter #(not-match-ignore-case x %) poly)
+           length (count (do-react new-poly))]
+      {x length})))
+
+(defn part2 [inp]
+  (->>
+    (do-unit-types inp)
+    (reduce conj)
+    (apply min-key val)))
+
+(defn part1 [inp]
+    (count (do-react inp)))
 
 (defn run []
-  (let [prod true]
-    {:part1 (part1 prod)}))
+  (let [prod true
+        inp (get-inp prod)]
+    {:part1 (part1 inp)
+     :part2 (part2 (inp 0))}))
 
-(defn red [x y]
-  (do
-    (prn x y)
-    (if (> y 4)
-      (pop x)
-      (conj x y))))
