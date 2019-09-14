@@ -13,7 +13,7 @@
         rec {:guard new-guard :action line-type :hrs hrs :mins mins}]
     (if (= 1 (count inp))
       (list rec)
-      (conj (parse-inp (rest inp) new-guard) rec))))
+      (cons rec (parse-inp (rest inp) new-guard)))))
 
 ; return list of guards with the guard sleep/awake minutes applied
 ; ignores anything other than falls/wakes.
@@ -28,7 +28,7 @@
   (loop [inp shed
          guards {}]
       (cond
-        (= 0 (count inp)) guards
+        (empty? inp) guards
         :else (recur (rest inp) (add-mins guards (first inp))))))
 
 (defn sleepiest-guard [sleeps]
@@ -55,4 +55,6 @@
 ;:part2 (part2 prod)}))
 
 ;(def d (part1 false))
-;(def inp (parse-inp (sort (utils/get-inp "04" false)) nil))
+(def inp (parse-inp (sort (utils/get-inp "04" false)) nil))
+
+
